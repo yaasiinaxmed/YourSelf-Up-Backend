@@ -13,7 +13,7 @@ server.use(cors())
 mongoose.connect(process.env.DATABASE_URL).then(() => {
     console.log("Connected MongoDB")
 }).catch((error) => {
-    console.log('Connected MongoDB Error:', error)
+    console.log('Connecting MongoDB Error:', error)
 })
 
 export default server
