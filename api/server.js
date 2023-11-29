@@ -17,6 +17,6 @@ mongoose.connect(process.env.DATABASE_URL).then(() => {
     console.log('Connecting MongoDB Error:', error)
 })
 
-server.use("/api/user", userRouter)
+server.use("/api/auth", userRouter)
 
 export default server
