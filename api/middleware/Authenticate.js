@@ -21,8 +21,6 @@ const Authenticate = async (req, res, next) => {
             return res.status(401).json({status: 401, message: "Token invalid!"})
         }
 
-        console.log("DECODED USER", decode)
-
         req.user = decode
 
         next()
