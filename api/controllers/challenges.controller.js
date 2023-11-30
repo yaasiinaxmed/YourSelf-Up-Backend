@@ -1,7 +1,7 @@
 import challengesModel from "../models/challenges.model.js";
 import taskModel from "../models/tasks.model.js";
 
-// get challenges
+// get challenges - GET
 export const getChallenges = async (req, res) => {
   try {
     const challenges = await challengesModel
@@ -19,7 +19,7 @@ export const getChallenges = async (req, res) => {
   }
 };
 
-// Create Challenge
+// Create Challenge - POST
 export const createChallenge = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -70,3 +70,69 @@ export const createChallenge = async (req, res) => {
     });
   }
 };
+
+// Update IsTrue the task - PUT
+export const IsTrue = async (req, res) => {
+  try {
+    
+    const taskId = req.params.id
+
+    const task = await taskModel.findById(taskId)
+
+    if(!task) {
+      return res.status(404).json({success: false, message: "Task is not found"})
+    }
+
+    const updateTask = await taskModel.findByIdAndUpdate(
+      taskId,
+      { isTrue: !task.isTrue },
+      { new: true }
+    )
+
+    if(!updateTask) {
+      return res.status(404).json({success: false, message: "Task was not updated"})
+    }
+
+    res.status(200).json({success: true, message: "IsTrue updated successfully", task})
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      errorMessage: error,
+    });
+  }
+}
+
+// Update IsFalse the task - PUT
+export const IsFalse = async (req, res) => {
+  try {
+    
+    const taskId = req.params.id
+
+    const task = await taskModel.findById(taskId)
+
+    if(!task) {
+      return res.status(404).json({success: false, message: "Task is not found"})
+    }
+
+    const updateTask = await taskModel.findByIdAndUpdate(
+      taskId,
+      { isFalse: !task.isFalse },
+      { new: true }
+    )
+
+    if(!updateTask) {
+      return res.status(404).json({success: false, message: "Task was not updated"})
+    }
+
+    res.status(200).json({success: true, message: "IsFalse updated successfully", task})
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      errorMessage: error,
+    });
+  }
+}
