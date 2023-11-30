@@ -4,6 +4,7 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import authRouter from './routers/auth.router.js'
 import userRouter from './routers/user.route.js'
+import challengesRouter from './routers/challenges.route.js'
 
 dotenv.config()
 
@@ -20,5 +21,6 @@ mongoose.connect(process.env.DATABASE_URL).then(() => {
 
 server.use("/api/auth", authRouter)
 server.use("/api/user", userRouter)
+server.use("/api/challenges", challengesRouter)
 
 export default server
