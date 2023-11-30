@@ -136,3 +136,32 @@ export const IsFalse = async (req, res) => {
     });
   }
 }
+
+// Challenge delete - DELETE
+export const deleteChallenge = async (req, res) => {
+  try {
+    
+    const challengeId = req.params.id
+
+    const deletedChallenge = await challengesModel.findByIdAndDelete(challengeId)
+
+    if(!deletedChallenge) {
+      return res.status(404).json({success: false, message: "Challenge was not deleted"})
+    }
+
+    const deletedTasks = await taskModel.deleteMany({challenge: challengeId})
+
+    if(!deletedTasks) {
+      return res.status(404).json({success: false, message: "Challenge was not deleted"})
+    }
+
+    res.status(200).json({success: true, message: "Challenge was deleted successfully"})
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      errorMessage: error,
+    });
+  }
+}
