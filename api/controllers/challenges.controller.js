@@ -75,25 +75,36 @@ export const createChallenge = async (req, res) => {
 export const IsTrue = async (req, res) => {
   try {
     
-    const taskId = req.params.id
+    const challengeId = req.params.challengeID
+    const taskId = req.params.taskID
+    const isTrue = req.body.isTrue
 
-    const task = await taskModel.findById(taskId)
-
-    if(!task) {
-      return res.status(404).json({success: false, message: "Task is not found"})
-    }
-
-    const updateTask = await taskModel.findByIdAndUpdate(
+    const updatedTask = await taskModel.findByIdAndUpdate(
       taskId,
-      { isTrue: !task.isTrue },
+      { isTrue: !isTrue },
       { new: true }
     )
-
-    if(!updateTask) {
+    
+    if(!updatedTask) {
       return res.status(404).json({success: false, message: "Task was not updated"})
     }
 
-    res.status(200).json({success: true, message: "IsTrue updated successfully", task})
+    const updatedChallenge = await challengesModel.findOneAndUpdate(
+      {_id: challengeId,
+       'tasks._id': taskId},
+       {
+        $set: {
+          'tasks.$.isTrue': !isTrue
+        }
+       },
+       {new: true}
+    )
+
+    if (!updatedChallenge) {
+      return res.status(404).json({ success: false, message: 'Challenge or task not found' });
+    }
+
+    res.status(200).json({ success: true, message: "Task updated successfully"});
 
   } catch (error) {
     res.status(500).json({
@@ -107,26 +118,35 @@ export const IsTrue = async (req, res) => {
 // Update IsFalse the task - PUT
 export const IsFalse = async (req, res) => {
   try {
-    
-    const taskId = req.params.id
+    const challengeId = req.params.challengeID
+    const taskId = req.params.taskID
+    const isFalse = req.body.isFalse
 
-    const task = await taskModel.findById(taskId)
-
-    if(!task) {
-      return res.status(404).json({success: false, message: "Task is not found"})
-    }
-
-    const updateTask = await taskModel.findByIdAndUpdate(
+    const updatedTask = await taskModel.findByIdAndUpdate(
       taskId,
-      { isFalse: !task.isFalse },
+      { isFalse: !isFalse },
       { new: true }
     )
 
-    if(!updateTask) {
+    if(!updatedTask) {
       return res.status(404).json({success: false, message: "Task was not updated"})
     }
 
-    res.status(200).json({success: true, message: "IsFalse updated successfully", task})
+    const updatedChallenge = await challengesModel.findOneAndUpdate(
+      {_id: challengeId, 'tasks._id': taskId},
+      {
+        $set: {
+          'tasks.$.isFalse': !isFalse
+        },
+      },
+      {new: true}
+    )
+
+    if(!updatedChallenge) {
+      return res.status(404).json({success: false, message: "Challenge or task not found"})
+    }
+
+    res.status(200).json({success: true, message: "IsFalse updated successfully"})
 
   } catch (error) {
     res.status(500).json({

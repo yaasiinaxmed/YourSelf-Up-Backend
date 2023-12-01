@@ -16,7 +16,7 @@ export const GoogleAuth = async (req, res) => {
         if(user) {
             const token = jwt.sign({id: user._id}, secretKey, {expiresIn: "7d"})
 
-            res.status(200).json({status: 200, messages: "Sign In Was successfully", token})
+            res.status(200).json({success: true, messages: "Sign In Was successfully", token})
         } else {
             // Generate a secure random password
             const generatedPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8)
@@ -37,9 +37,9 @@ export const GoogleAuth = async (req, res) => {
             // Generate a JWT token for the new user
             const token = jwt.sign({id: newUser._id}, secretKey, {expiresIn: "7d"})
 
-            res.status(200).json({status: 200, messages: "Sign Up Was successfully", token})
+            res.status(200).json({success: true, messages: "Sign Up Was successfully", token})
         }
     } catch (error) {
-        res.status(500).json({status: 500, message: "Internal Server Error", errorMessage: error})
+        res.status(500).json({success: false, message: "Internal Server Error", errorMessage: error})
     }
 }

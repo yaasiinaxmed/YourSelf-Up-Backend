@@ -12,8 +12,6 @@ const Authenticate = async (req, res, next) => {
         return res.status(401).json({status: 401, message: "Authentication required!"})
     }
 
-    console.log("TOKEN", token)
-
     const tokenWithoutBearer = token.split(" ")[1]
 
     jwt.verify(tokenWithoutBearer, secretKey, (error, decode) => {

@@ -7,7 +7,7 @@ const router = express.Router()
 router.get("/", getChallenges)
 router.post("/create", Authenticate, createChallenge)
 router.delete("/delete/:id", deleteChallenge)
-router.put('/task/isTrue/:id', IsTrue)
-router.put('/task/isFalse/:id', IsFalse)
+router.put('/:challengeID/task/:taskID/isTrue', IsTrue)
+router.put('/:challengeID/task/:taskID/isFalse', IsFalse)
 
 export default router
